@@ -76,7 +76,10 @@ module Refile
       object = options[:object]
       options[:data] ||= {}
 
-      definition = object.send(:"#{method}_attachment_definition")
+      if object.respond_to?(:"#{method}_attachment_definition")
+        definition = object.send(:"#{method}_attachment_definition")
+        options[:accept] = definition.accept
+      end
       options[:accept] = definition.accept
 
       if options[:direct]
